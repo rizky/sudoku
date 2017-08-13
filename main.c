@@ -44,8 +44,12 @@ int main(int argc, char **argv)
 	{
 		solution = 0;
 		ft_put_number(board, 0, 0, &solution);
+		printf("%d\n", solution);
 		if(solution == 1)
+		{
+			solution = 0;
 			ft_print_number(board, 0, 0, &solution);
+		}
 		else
 			ft_putstr("Error\n");
 	}

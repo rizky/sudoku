@@ -103,39 +103,48 @@ void	ft_print_board(int board[9][9])
 	}
 }
 
+void	ft_count_posibilities(int board[9][9], int row, int col, int *heu)
+{
+	int i;
+	int posib;
+
+	i = 1;
+	posib = 0;
+	while (i <= 9)
+	{
+		if (board[row][col] != 0)
+			posib = 10;
+		else if (ft_is_available(board, row, col, i))
+			posib++;
+		i++;
+	}
+	if (heu[2] > posib)
+	{
+		heu[2] = posib;
+		heu[0] = row;
+		heu[1] = col;
+	}
+}
+
 int		ft_mcv_heuristic(int board[9][9], int *row, int *col)
 {
 	int	heu[3];
-	int counter[4];
+	int	i;
+	int	j;
 
 	heu[0] = 0;
 	heu[1] = 0;
 	heu[2] = 10;
-	counter[0] = 0;
-	while (counter[0] < 9)
+	i = 0;
+	while (i < 9)
 	{
-		counter[1] = 0;
-		while (counter[1] < 9)
+		j = 0;
+		while (j < 9)
 		{
-			counter[2] = 1;
-			counter[3] = 0;
-			while (counter[2] <= 9)
-			{
-				if (board[counter[0]][counter[1]] != 0)
-					counter[3] = 10;
-				else if (ft_is_available(board, counter[0], counter[1], counter[2]))
-					counter[3]++;
-				counter[2]++;
-			}
-			if (heu[2] > counter[3])
-			{
-				heu[2] = counter[3];
-				heu[0] = counter[0];
-				heu[1] = counter[1];
-			}
-			counter[1]++;
+			ft_count_posibilities(board, i, j, heu);
+			j++;
 		}
-		counter[0]++;
+		i++;
 	}
 	*row = heu[0];
 	*col = heu[1];
@@ -154,7 +163,7 @@ int		ft_put_number(int board[9][9], int row, int col, int *solution)
 		if (ft_is_available(board, row, col, number))
 		{
 			board[row][col] = number;
-			if (ft_put_number(board, row, col + 1, solution))
+			if (ft_put_number(board, row, col, solution))
 			{
 				*solution = *solution + 1;
 			}
@@ -178,12 +187,12 @@ int		ft_print_number(int board[9][9], int row, int col, int *solution)
 		if (ft_is_available(board, row, col, number))
 		{
 			board[row][col] = number;
-			if (ft_print_number(board, row, col + 1, solution))
+			if (ft_print_number(board, row, col, solution))
 			{
 				*solution = *solution + 1;
 				ft_print_board(board);
 			}
-			if (*solution < 2)
+			if (*solution == 0)
 				board[row][col] = 0;
 		}
 		number++;
