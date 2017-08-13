@@ -1,30 +1,15 @@
 // #include "sudoku.c"
-#include "sudoku-faster.c"
+#include "sudoku.c"
 #include <stdio.h>
+#include <stdlib.h>
 
-int main()
+int main(int argc, char **argv)
 {
 	int i;
 	int j;
-
-	// int board[3][3] = {  
-	// 	{9, 0, 0} ,   
-	// 	{2, 0, 0} , 
-	// 	{0, 6, 0} 
-	// 	};
-
- 	// int board[9][9] = {  
-		// {9, 0, 0, 0, 7, 0, 0, 0, 0} ,   
-		// {2, 0, 0, 0, 9, 0, 0, 5, 3} , 
-		// {0, 6, 0, 0, 1, 2, 4, 0, 0} , 
-		// {8, 4, 0, 0, 0, 1, 0, 9, 0} , 
-		// {5, 0, 0, 0, 0, 0, 8, 0, 0} , 
-		// {0, 3, 1, 0, 0, 4, 0, 0, 0} , 
-		// {0, 0, 3, 7, 0, 0, 6, 8, 0} , 
-		// {0, 9, 0, 0, 5, 0, 7, 4, 1} , 
-		// {4, 7, 0, 0, 0, 0, 0, 0, 0} 
-		// };
- 	int board[9][9] = {  
+	int solution;
+	int valid;
+	int board[9][9] = {  
 		{0, 0, 0, 0, 0, 0, 0, 0, 0} ,   
 		{0, 0, 0, 0, 0, 0, 0, 0, 0} , 
 		{0, 0, 0, 0, 0, 0, 0, 0, 0} , 
@@ -35,17 +20,38 @@ int main()
 		{0, 0, 0, 0, 0, 0, 0, 0, 0} , 
 		{0, 0, 0, 0, 0, 0, 0, 0, 0} 		
 		};
- 	// int board[9][9] = {  
-	// 	{0, 9, 0, 0, 1, 0, 0, 7, 0} ,   
-	// 	{2, 0, 0, 4, 9, 0, 0, 0, 8} , 
-	// 	{0, 0, 6, 0, 0, 0, 5, 0, 0} , 
-	// 	{0, 0, 0, 0, 0, 0, 0, 1, 0} , 
-	// 	{9, 5, 0, 0, 7, 0, 0, 4, 2} , 
-	// 	{0, 6, 0, 0, 0, 0, 0, 0, 0} , 
-	// 	{0, 0, 8, 0, 0, 0, 7, 0, 0} , 
-	// 	{6, 0, 0, 0, 5, 7, 0, 0, 3} , 
-	// 	{0, 4, 0, 0, 8, 0, 0, 9, 0} 		
-	// 	};
-    printf("solution: %d\n", ft_sudoku(board));
+	valid = 1;
+	if(argc == 10)
+	{
+		i = 1;
+		while (i <= 9)
+		{
+			j = 0;
+			while (argv[i][j])
+			{
+				if (argv[i][j] >= '0' && argv[i][j] <= '9')
+					board[i - 1][j] = argv[i][j] - 48;
+				else if (argv[i][j] == '.')
+					board[i - 1][j] = 0;
+				else
+					valid = 0;
+				j++;
+			}
+			i++;
+		}
+	}
+	if(valid)
+	{
+		solution = 0;
+		ft_put_number(board, 0, 0, &solution);
+		if(solution == 1)
+			ft_print_number(board, 0, 0, &solution);
+		else
+			ft_putstr("Error\n");
+	}
+	else
+	{
+		ft_putstr("Error\n");
+	}
     return (0);
 }
